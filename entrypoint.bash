@@ -15,6 +15,8 @@ echo $'[gentoo]\nmasters = gentoo' > /usr/portage/metadata/layout.conf
 cd /var/www/distrowatch-gentoo-ev-org/
 
 while true; do
-    emerge-webrsync && /root/gentoo_x86_latest
+    if emerge-webrsync; then
+        /root/gentoo_x86_latest
+    fi
     sleep 12h
 done
