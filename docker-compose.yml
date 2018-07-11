@@ -1,0 +1,33 @@
+# Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under the MIT license
+
+version: "3"
+
+networks:
+  ssl-reverse-proxy:
+    external: yes
+
+services:
+  distrowatch-gentoo-ev-org:
+    image: nginx
+    ports:
+      - 127.0.0.1:50480:80
+    networks:
+      - default
+      - ssl-reverse-proxy
+    volumes:
+      - ./htdocs/:/usr/share/nginx/html:ro
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+
+  distrowatch-cron:
+    image: gentoo/stage3-amd64
+    entrypoint: ["/root/entrypoint.bash"]
+    command: []
+    volumes:
+      - ./entrypoint.bash:/root/entrypoint.bash
+      - ./gentoo_x86_latest:/root/gentoo_x86_latest
+      - ./htdocs/:/var/www/distrowatch-gentoo-ev-org/htdocs/
+      - usr-portage:/usr/portage/
+
+volumes:
+  usr-portage:
