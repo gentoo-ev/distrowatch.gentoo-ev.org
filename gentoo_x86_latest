@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # Create a list of latest stable and testing x86 packages in Gentoo
 # Copyright (C) Sebastian Pipping <sebastian@pipping.org>
 # GPLv3 or later
@@ -73,7 +73,7 @@ for category_package, stable_testing in sorted(tree.items(), key=lambda x: x[0].
     try:
         latest_stable = get_latest(stable_testing[STABLE])
         s.write('%s %s\n' % (category_package, latest_stable))
-    except KeyError, IndexError:
+    except (KeyError, IndexError):
         pass
     try:
         latest_testing = get_latest(
