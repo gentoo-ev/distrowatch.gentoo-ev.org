@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   distrowatch-cron:
-    image: gentoo/stage3-amd64
+    image: gentoo/stage3
     entrypoint: ["/root/entrypoint.bash"]
     command: []
     volumes:
