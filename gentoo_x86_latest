@@ -2,7 +2,7 @@
 # Create a list of latest stable and testing x86 packages in Gentoo
 # Copyright (C) Sebastian Pipping <sebastian@pipping.org>
 # GPLv3 or later
-# 1.5, 2023-03-04 19:28 UTC+1
+# 1.5, 2023-03-04 19:31 UTC+1
 
 import os
 from functools import cmp_to_key
@@ -28,7 +28,7 @@ def add_ebuild(category_package, stable, version_revision):
     tree[category_package][stable].add(version_revision)
 
 # print 'Scanning'
-for ebuild_filename in glob.glob('/usr/portage/*/*/*.ebuild'):
+for ebuild_filename in glob.glob('/var/db/repos/gentoo/*/*/*.ebuild'):
     split_up = ebuild_filename.split('/')
 
     category_package = '/'.join(split_up[-3:-1])

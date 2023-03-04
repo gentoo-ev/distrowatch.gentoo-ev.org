@@ -28,8 +28,8 @@ services:
       - ./entrypoint.bash:/root/entrypoint.bash
       - ./gentoo_x86_latest:/root/gentoo_x86_latest
       - ./htdocs/:/var/www/distrowatch-gentoo-ev-org/htdocs/
-      - usr-portage:/usr/portage/
+      - gentoo-repo:/var/db/repos/gentoo/
     restart: unless-stopped
 
 volumes:
-  usr-portage:
+  gentoo-repo:
