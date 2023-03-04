@@ -9,9 +9,6 @@ fi
 
 set -e
 
-mkdir -p /usr/portage/metadata/
-echo $'[gentoo]\nmasters = gentoo' > /usr/portage/metadata/layout.conf
-
 cd /var/www/distrowatch-gentoo-ev-org/
 
 while true; do
