@@ -13,7 +13,9 @@ cd /var/www/distrowatch-gentoo-ev-org/
 
 while true; do
     if emerge-webrsync; then
+        echo -n 'Generating... '
         /root/gentoo_x86_latest
+        echo 'DONE.'
     fi
     sleep 12h
 done
