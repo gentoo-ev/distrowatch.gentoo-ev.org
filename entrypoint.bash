@@ -2,7 +2,7 @@
 # Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under the MIT license
 
-set -e
+set -e -u
 
 cd /var/www/distrowatch-gentoo-ev-org/
 
@@ -16,5 +16,10 @@ while true; do
         /root/gentoo_x86_latest
         echo 'DONE.'
     fi
+
+    if [[ ${LOOP:-} == false ]]; then
+        exit 0
+    fi
+
     sleep 12h
 done
