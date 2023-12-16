@@ -53,15 +53,23 @@ for ebuild_filename in glob.glob('/var/db/repos/gentoo/*/*/*.ebuild'):
     f.close()
     if not all_keyword_line:
         continue
-    keyword_line = all_keyword_line[0]
+
+    try:
+        keyword_line = next(line for line in all_keyword_line if line.strip())
+    except StopIteration:
+        continue
+
     x86_pos = keyword_line.find('x86')
-    if x86_pos != -1:
-        op = keyword_line[x86_pos - 1]
-        stable = False
-        if op in ('"', '\'', ' '):
-            stable = True
-        elif op == '-':
-            continue
+    if x86_pos == -1:
+        continue
+
+    op = keyword_line[x86_pos - 1]
+    stable = False
+    if op in ('"', '\'', ' '):
+        stable = True
+    elif op == '-':
+        continue
+
     add_ebuild(category_package, stable, version_revision)
 
 STABLE = True
