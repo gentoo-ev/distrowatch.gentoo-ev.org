@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install --no-install-recommends --yes -V \
 # https://github.com/moby/moby/issues/6880#issuecomment-344114520
 RUN ln -s ../conf-available/10-accesslog.conf /etc/lighttpd/conf-enabled/
 RUN ln -s ../conf-available/10-dir-listing.conf /etc/lighttpd/conf-enabled/
+# Disable version in server tag
+RUN echo 'server.tag = "lighttpd"' > /etc/lighttpd/conf-available/99-local.conf
+RUN ln -s ../conf-available/99-local.conf /etc/lighttpd/conf-enabled/
 RUN mkfifo -m 600 /var/log/lighttpd/access.log
 RUN chown www-data:www-data /var/log/lighttpd/access.log
 EXPOSE 80
