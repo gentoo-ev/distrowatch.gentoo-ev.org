@@ -26,7 +26,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends -V \
               docker-compose \
-              wait-for-it
+              wait-for-it \
+              yq
 
       - name: Build Docker image
         run: |-
@@ -42,10 +43,15 @@ jobs:
           docker-compose run -e LOOP=false distrowatch-cron
           ls -l htdocs/x86/
 
-          wait-for-it 127.0.0.1:50480
-          wget -O- http://127.0.0.1:50480/x86/latest_stable.txt \
+          # Get ports from docker-compose.yml. The value looks like
+          # 127.0.0.1:50180:80 but we need only the first two components
+          ip_and_port=$(yq -r \
+                '.services[].ports[0]//empty | split(":") | .[:2] | join(":")' \
+                docker-compose.yml)
+          wait-for-it "${ip_and_port}"
+          wget -O- "http://${ip_and_port}/x86/latest_stable.txt" \
               | grep -qF media-gfx/gimp
-          wget -O- http://127.0.0.1:50480/x86/latest_unstable.txt \
+          wget -O- "http://${ip_and_port}/x86/latest_unstable.txt" \
               | grep -qF media-gfx/gimp
 
           docker-compose down
