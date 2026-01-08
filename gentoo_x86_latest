@@ -5,6 +5,7 @@
 # 1.5, 2023-03-04 19:31 UTC+1
 
 import os
+import subprocess
 from functools import cmp_to_key
 from portage.versions import catpkgsplit, vercmp
 import glob
@@ -15,6 +16,9 @@ STABLE_FILENAME = os.path.join(OUTPUT_DIR, 'latest_stable.txt')
 TESTING_FILENAME = os.path.join(OUTPUT_DIR, 'latest_unstable.txt')
 
 tree = {}
+
+def get_portdir():
+    return subprocess.check_output("portageq get_repo_path / gentoo".split()).decode('utf-8').strip()
 
 def get_latest(version_revision_set):
     return sorted(version_revision_set, key=cmp_to_key(vercmp))[-1]
@@ -28,7 +32,7 @@ def add_ebuild(category_package, stable, version_revision):
     tree[category_package][stable].add(version_revision)
 
 # print 'Scanning'
-for ebuild_filename in glob.glob('/var/db/repos/gentoo/*/*/*.ebuild'):
+for ebuild_filename in glob.glob(get_portdir() + '/*/*/*.ebuild'):
     split_up = ebuild_filename.split('/')
 
     category_package = '/'.join(split_up[-3:-1])
