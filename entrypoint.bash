@@ -15,6 +15,7 @@ while true; do
         echo -n 'Generating... '
         /root/gentoo_x86_latest
         echo 'DONE.'
+        ls -lh htdocs/x86/latest_*.txt
     fi
 
     # Clean-up potential left-overs
