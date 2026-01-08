@@ -6,6 +6,7 @@
 
 import os
 from functools import cmp_to_key
+from tempfile import NamedTemporaryFile
 from portage.versions import catpkgsplit, vercmp
 import glob
 
@@ -75,22 +76,26 @@ for ebuild_filename in glob.glob('/var/db/repos/gentoo/*/*/*.ebuild'):
 STABLE = True
 UNSTABLE = False
 
-# print 'Writing'
-s = open(STABLE_FILENAME, 'w')
-t = open(TESTING_FILENAME, 'w')
-for category_package, stable_testing in sorted(tree.items(), key=lambda x: x[0].lower()):
-    try:
-        latest_stable = get_latest(stable_testing[STABLE])
-        s.write('%s %s\n' % (category_package, latest_stable))
-    except (KeyError, IndexError):
-        pass
-    try:
-        latest_testing = get_latest(
-            stable_testing.get(STABLE, set()).union(
-            stable_testing.get(UNSTABLE, set())))
-        t.write('%s %s\n' % (category_package, latest_testing))
-    except IndexError:
-        pass
-s.close()
-t.close()
-# print 'Done'
+with (
+    NamedTemporaryFile(dir=OUTPUT_DIR, prefix=".", suffix="_stable.txt", mode='w+', delete=False) as s,
+    NamedTemporaryFile(dir=OUTPUT_DIR, prefix=".", suffix="_testing.txt", mode='w+', delete=False) as t,
+):
+    for category_package, stable_testing in sorted(tree.items(), key=lambda x: x[0].lower()):
+        try:
+            latest_stable = get_latest(stable_testing[STABLE])
+            s.write('%s %s\n' % (category_package, latest_stable))
+        except (KeyError, IndexError):
+            pass
+        try:
+            latest_testing = get_latest(
+                stable_testing.get(STABLE, set()).union(
+                stable_testing.get(UNSTABLE, set())))
+            t.write('%s %s\n' % (category_package, latest_testing))
+        except IndexError:
+            pass
+
+os.rename(s.name, STABLE_FILENAME)
+os.chmod(STABLE_FILENAME, mode=0o644)
+
+os.rename(t.name, TESTING_FILENAME)
+os.chmod(TESTING_FILENAME, mode=0o644)
