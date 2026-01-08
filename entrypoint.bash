@@ -17,6 +17,10 @@ while true; do
         echo 'DONE.'
     fi
 
+    # Clean-up potential left-overs
+    # https://github.com/gentoo-ev/distrowatch.gentoo-ev.org/issues/24
+    rm -Rf /var/tmp/portage/webrsync-*
+
     if [[ ${LOOP:-} == false ]]; then
         exit 0
     fi
