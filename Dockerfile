@@ -1,7 +1,7 @@
 # Copyright (C) 2023 Sebastian Pipping <sebastian@pipping.org>
 # SPDX-License-Identifier: MIT
 
-FROM debian:bullseye-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install --no-install-recommends --yes -V \
         lighttpd
