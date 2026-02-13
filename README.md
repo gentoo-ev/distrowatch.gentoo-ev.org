@@ -12,3 +12,9 @@
 ```
 
 Enjoy :)
+
+
+# License
+
+- `gentoo_x86_latest`: GPL-3+
+- Everything else: MIT
